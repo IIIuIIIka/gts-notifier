@@ -1,4 +1,4 @@
-package com.gts.notifier.service;
+package com.gts.notifier.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,8 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gts.notifier.data.User;
+import com.gts.notifier.model.User;
 import com.gts.notifier.repository.UserRepository;
+import com.gts.notifier.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {

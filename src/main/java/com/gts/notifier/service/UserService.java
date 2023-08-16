@@ -3,7 +3,7 @@ package com.gts.notifier.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.gts.notifier.data.User;
+import com.gts.notifier.model.User;
 
 public interface UserService {
 

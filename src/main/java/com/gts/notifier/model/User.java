@@ -1,35 +1,42 @@
-package com.gts.notifier.data;
+package com.gts.notifier.model;
 
-import jakarta.persistence.Column;
+import java.util.List;
+
+import org.springframework.lang.Nullable;
+
+import com.gts.notifier.data.UserName;
+import com.gts.notifier.data.UserTimeSlot;
+
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="users")
 public class User {
 
 	@Id
-	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Embedded
+	private UserName name;
 	
-	@Column(name="first_name")
-	private String firstName;
-	
-	@Column(name="middle_name")
-	private String middleName;
-	
-	@Column(name="last_name")
-	private String lastName;
-	
-	
+	@Nullable
+	@Embedded
+	@ElementCollection
+	private List<UserTimeSlot> timeSlots;
+
 }

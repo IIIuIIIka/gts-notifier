@@ -1,33 +1,40 @@
-package com.gts.notifier.data;
+package com.gts.notifier.model;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+
+import org.springframework.lang.NonNull;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name="events")
 public class Event {
 
 	@Id
-	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NonNull
 	@Column(name="message")
 	private String message;
 	
+	@NonNull
 	@Column(name="event_date_time")
-	private Date eventDateTime;
-		
+	private LocalDateTime eventDateTime;
+	
+	@PrePersist
+	public void createdAt() {
+		eventDateTime = LocalDateTime.now();
+	}
+	
 }
