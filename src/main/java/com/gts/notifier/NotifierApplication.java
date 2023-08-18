@@ -1,7 +1,5 @@
 package com.gts.notifier;
 
-import java.util.concurrent.Executor;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +18,7 @@ public class NotifierApplication {
 	}
 
 	@Bean
-	public Executor taskExecutor() {
+	public ThreadPoolTaskExecutor taskExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(2);
 		executor.setMaxPoolSize(2);

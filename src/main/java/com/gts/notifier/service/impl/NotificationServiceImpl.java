@@ -17,21 +17,20 @@ import com.gts.notifier.service.NotificationService;
 import com.gts.notifier.service.UserService;
 import com.gts.notifier.task.NotificationTask;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class NotificationServiceImpl implements NotificationService {
 
-	@Autowired
 	private UserService userService;
 	
-	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
 	
-	@Autowired
 	private ThreadPoolTaskScheduler taskScheduler;
-	
+		
 	@Override
 	public void sendNotify(Event event) {
 		log.info("Successfully injected into listener");
@@ -77,7 +76,14 @@ public class NotificationServiceImpl implements NotificationService {
 			return false;
 	}
 	
-	private Instant getScheduledStart() {
-		return null;
-	}
+	/*
+	 * private Instant getScheduledStart(User user, LocalDateTime event) {
+	 * List<UserTimeSlot> weekDayIntervals = user.getTimeSlots() .stream() .filter(
+	 * ts -> ts.getDay().equals( event.getDayOfWeek() ) ) .toList(); if(
+	 * weekDayIntervals.stream() .filter( i -> i.getStartSlot().isBefore(
+	 * event.toLocalTime() ) && i.getEndSlot().isAfter( event.toLocalTime() ) )
+	 * .toList() .size() > 0 ) { return Instant.now(); } else {
+	 * 
+	 * } }
+	 */
 }
