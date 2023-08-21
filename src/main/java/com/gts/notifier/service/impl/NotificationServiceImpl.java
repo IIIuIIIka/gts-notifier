@@ -2,6 +2,8 @@ package com.gts.notifier.service.impl;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,54 +38,50 @@ public class NotificationServiceImpl implements NotificationService {
 		log.info("Successfully injected into listener");
 		List<User> users = userService.findAll();
 		users.stream()
-			 .map(u -> new NotificationTask(u, event))
-			 .forEach(nt -> {
-				 if( isAvailable(nt.getNotifiedUser(), event.getEventDateTime() ) ) {
-					 doNotify(nt);
-				 } else {
-					 scheduleNotify(nt, Instant.EPOCH);
-				 }
-			 });
+			 .map( u -> new NotificationTask(u, event) )
+			 .forEach( nt -> notifyTask(nt) );
 	}
 
 	@Async
-	private void doNotify(NotificationTask task) {
-		taskExecutor.execute( task );
-	}
-	
-	private void scheduleNotify(NotificationTask task, Instant start) {
-		taskScheduler.schedule(task, start);
-	}
-	
-	/**
-	 * 
-	 * @param user
-	 * @param event
-	 * @return
-	 */
-	private boolean isAvailable(User user, LocalDateTime event) {
-		List<UserTimeSlot> intervals = 
-				user.getTimeSlots()
+	private void notifyTask(NotificationTask task) {
+		if( task.getNotifiedUser().getTimeSlots() == null ) {
+			taskExecutor.execute( task );
+		} else {
+			LinkedList<UserTimeSlot> weekDayIntervals = new LinkedList<UserTimeSlot>( task.getNotifiedUser().getTimeSlots() );
+			LocalDateTime event = task.getNotifiedEvent().getEventDateTime();
+			if( weekDayIntervals
 					.stream()
-					.filter(ts -> ts.getDay().equals( event.getDayOfWeek() ) &&
-								  ts.getStartSlot().isBefore( event.toLocalTime() ) && 
-								  ts.getEndSlot().isAfter( event.toLocalTime() )
-							)
-					.toList();
-		if( intervals.size() > 0 )
-			return true;
-		else
-			return false;
+					.filter(ts -> 
+							ts.getWeekDay().equals( event.getDayOfWeek() ) &&
+							ts.getStartTime().isBefore( event.toLocalTime() ) && 
+							ts.getEndTime().isAfter( event.toLocalTime() )
+						)
+					.toList()
+					.size() > 0 ) {
+				taskExecutor.execute( task );
+			} else {
+				taskScheduler.schedule( task, getScheduledStart( weekDayIntervals, event.plusDays(1) ) );
+			}
+		}
 	}
 	
-	/*
-	 * private Instant getScheduledStart(User user, LocalDateTime event) {
-	 * List<UserTimeSlot> weekDayIntervals = user.getTimeSlots() .stream() .filter(
-	 * ts -> ts.getDay().equals( event.getDayOfWeek() ) ) .toList(); if(
-	 * weekDayIntervals.stream() .filter( i -> i.getStartSlot().isBefore(
-	 * event.toLocalTime() ) && i.getEndSlot().isAfter( event.toLocalTime() ) )
-	 * .toList() .size() > 0 ) { return Instant.now(); } else {
-	 * 
-	 * } }
-	 */
+	private Instant getScheduledStart( LinkedList<UserTimeSlot> slots, LocalDateTime event ) {
+		UserTimeSlot slot = slots.stream()
+			.filter(ts -> 
+					ts.getWeekDay().equals( event.getDayOfWeek() ) &&
+					ts.getStartTime().isBefore( event.toLocalTime() ) && 
+					ts.getEndTime().isAfter( event.toLocalTime() )
+				)
+			.toList()
+			.get(0);
+		if( slot != null ) {
+			return slot.getStartTime()
+					.atDate( event.toLocalDate() )
+					.atZone( ZoneId.systemDefault() )
+					.toInstant();
+		} else {
+			return getScheduledStart( slots, event.plusDays(1) );
+		}
+	}
+	
 }

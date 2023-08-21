@@ -40,4 +40,7 @@ public class User {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<UserTimeSlot> timeSlots;
 
+	public List<UserTimeSlot> getTimeSlots() {
+		return this.timeSlots.stream().sorted().toList();
+	}
 }

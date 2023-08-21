@@ -3,8 +3,6 @@ package com.gts.notifier.data;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
-import org.springframework.lang.Nullable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
@@ -15,15 +13,23 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserTimeSlot {
+public class UserTimeSlot implements Comparable<UserTimeSlot> {
 	
-	@Nullable
 	@Column(name="week_day")
-	private DayOfWeek day;
+	private DayOfWeek weekDay;
 	
-	@Column(name="start_slot")
-	private LocalTime startSlot;
+	@Column(name="start_time")
+	private LocalTime startTime;
 	
-	@Column(name="end_slot")
-	private LocalTime endSlot;
+	@Column(name="end_time")
+	private LocalTime endTime;
+
+	@Override
+	public int compareTo(UserTimeSlot o) {
+		if( this.weekDay.compareTo( o.getWeekDay() ) != 0 ) {
+			return this.weekDay.compareTo( o.getWeekDay() );
+		} else {
+			return startTime.compareTo( o.getStartTime() );
+		}
+	}
 }
