@@ -20,6 +20,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author gorbachevov
+ */
+
 @Data
 @Entity
 @Builder
@@ -39,8 +43,4 @@ public class User {
 	@Embedded
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<UserTimeSlot> timeSlots;
-
-	public List<UserTimeSlot> getTimeSlots() {
-		return this.timeSlots.stream().sorted().toList();
-	}
 }

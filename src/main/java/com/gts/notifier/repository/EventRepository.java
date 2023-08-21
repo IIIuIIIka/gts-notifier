@@ -5,6 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.gts.notifier.model.Event;
 
+/**
+ * @author gorbachevov
+ */
+
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long>{
 

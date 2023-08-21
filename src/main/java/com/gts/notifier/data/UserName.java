@@ -9,6 +9,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Helper class represents full name of user
+ * @author gorbachevov
+ */
+
 @Getter
 @Setter
 @Embeddable

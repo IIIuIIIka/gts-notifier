@@ -5,6 +5,10 @@ import java.util.Optional;
 
 import com.gts.notifier.model.User;
 
+/**
+ * @author gorbachevov
+ */
+
 public interface UserService {
 
 	Optional<User> findById( Long id );

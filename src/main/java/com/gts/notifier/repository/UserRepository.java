@@ -5,6 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.gts.notifier.model.User;
 
+/**
+ * @author gorbachevov
+ */
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 

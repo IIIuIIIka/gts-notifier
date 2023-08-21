@@ -5,21 +5,26 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gts.notifier.model.User;
 import com.gts.notifier.repository.UserRepository;
 import com.gts.notifier.service.UserService;
 
+import lombok.AllArgsConstructor;
+
+/**
+ * Implementation for {@link UserService}
+ * @author gorbachevov
+ */
+
 @Service
+@Transactional
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImpl implements UserService {
 
 	private UserRepository userRepository;
-	
-	@Autowired
-	public UserServiceImpl(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-	
+		
 	@Override
 	public Optional<User> findById(Long id) {
 		return userRepository.findById(id);

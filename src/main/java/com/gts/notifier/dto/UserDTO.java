@@ -5,9 +5,14 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+/**
+ * DTO for User entity operating through REST API
+ * @author gorbachevov
+ */
+
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO {
 

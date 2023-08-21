@@ -9,6 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Helper class represents availability timeslot
+ * @author gorbachevov
+ */
+
 @Data
 @Embeddable
 @NoArgsConstructor

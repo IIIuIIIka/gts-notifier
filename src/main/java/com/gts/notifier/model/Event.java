@@ -12,14 +12,17 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * @author gorbachevov
+ */
+
+@Data
 @Entity
-@Getter
 @NoArgsConstructor
 @Table(name="events")
 @RequiredArgsConstructor
@@ -36,9 +39,4 @@ public class Event {
 	
 	@Column(name="event_date_time")
 	private LocalDateTime eventDateTime;
-	
-	@PrePersist
-	public void createdAt() {
-		eventDateTime = LocalDateTime.now();
-	}
 }

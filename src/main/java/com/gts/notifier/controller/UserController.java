@@ -18,9 +18,10 @@ import com.gts.notifier.dto.UserDTO;
 import com.gts.notifier.model.User;
 import com.gts.notifier.service.UserService;
 
-import lombok.extern.slf4j.Slf4j;
+/**
+ * @author gorbachevov 
+ */
 
-@Slf4j
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
@@ -39,7 +40,12 @@ public class UserController {
 	public ResponseEntity<?> create(@RequestBody UserDTO user) {
 		User request = convertFromDTO(user);
 		request = userService.create(request);
-		return ResponseEntity.ok(request);
+		return ResponseEntity.ok(convertFromEntity(request));
+	}
+	
+	@GetMapping("/users")
+	public ResponseEntity<?> getAllUsers() {
+		return ResponseEntity.ok(userService.findAll());
 	}
 	
 	@GetMapping("/users/{id}")
@@ -48,7 +54,7 @@ public class UserController {
 		 if( user.isEmpty() ) {
 			 return ResponseEntity.notFound().build();
 		 }
-		 return ResponseEntity.ok(user);
+		 return ResponseEntity.ok(convertFromEntity(user.get()));
 	}
 	
 	@PutMapping("/users/{id}")
@@ -59,10 +65,10 @@ public class UserController {
 		User updated = convertFromDTO(user);
 		updated.setId( exist.get().getId() );
 		userService.update(updated);
-		return ResponseEntity.ok(updated);
+		return ResponseEntity.ok(convertFromEntity(updated));
 	}
 	
-	@DeleteMapping("/users/id")
+	@DeleteMapping("/users/{id}")
 	public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
 		 Optional<User> user = userService.findById(id);
 		 if( user.isEmpty() ) {
@@ -74,6 +80,10 @@ public class UserController {
 	
 	private User convertFromDTO(UserDTO user) {
 		return modelMapper.map(user, User.class);
+	}
+	
+	private UserDTO convertFromEntity(User user) {
+		return modelMapper.map(user, UserDTO.class);
 	}
 	
 }

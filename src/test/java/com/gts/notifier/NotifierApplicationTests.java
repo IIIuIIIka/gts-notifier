@@ -9,12 +9,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.gts.notifier.data.UserName;
 import com.gts.notifier.data.UserTimeSlot;
+import com.gts.notifier.dto.TimeSlotDTO;
+import com.gts.notifier.dto.UserDTO;
 import com.gts.notifier.model.Event;
 import com.gts.notifier.model.User;
 import com.gts.notifier.repository.EventRepository;
@@ -32,6 +35,9 @@ class NotifierApplicationTests {
 	
 	@Autowired
 	private UserService us;
+	
+	@Autowired
+	private ModelMapper mapper;
 	
 	@Test
 	void userStoringTest() {
@@ -52,10 +58,31 @@ class NotifierApplicationTests {
 						.build();
 		user = us.create(user);
 		
-		assertEquals( user.getTimeSlots().get(3).getStartSlot(), LocalTime.NOON );
+		assertEquals( user.getTimeSlots().get(3).getStartTime(), LocalTime.NOON );
 	}
 	
 	@Test
+	void checkIfMapperMapsDTO_toEntity() {
+		
+		UserDTO dto = new UserDTO();
+		TimeSlotDTO ts = new TimeSlotDTO();
+		
+		dto.setFirstName("Ааааа");
+		dto.setMiddleName("Ббббб");
+		dto.setLastName("Ввввв");
+		
+		ts.setWeekDay("WEDNESDAY");
+		ts.setStartTime("08:30:00.000");
+		ts.setEndTime("15:25:00.000");
+		
+		dto.setTimeSlots( Arrays.asList( ts ) );
+		User user = mapper.map(dto, User.class);
+		
+		assertEquals(user.getName().getLastName(), dto.getLastName());
+		log.info(user.toString());
+	}
+	
+	//@Test
 	void eventListenerTest() {
 		log.info("Starting persistence test");
 		Event e = new Event("My first event stored");
