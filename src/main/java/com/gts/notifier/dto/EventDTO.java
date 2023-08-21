@@ -2,24 +2,22 @@ package com.gts.notifier.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gts.notifier.data.UserTimeSlot;
+import com.gts.notifier.model.Event;
 
 import lombok.Data;
 
 /**
+ * DTO for {@link Event} entity operating through REST API
  * @author gorbachevov
- * DTO for {@link UserTimeSlot} operating through REST API
  */
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TimeSlotDTO {
+public class EventDTO {
 
 	@JsonProperty
-	private String weekDay;
+	private String message;
 	@JsonProperty
-	private String startTime;
-	@JsonProperty
-	private String endTime;
-
+	private String eventDateTime;
+	
 }

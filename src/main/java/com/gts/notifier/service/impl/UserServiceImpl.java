@@ -14,7 +14,7 @@ import com.gts.notifier.service.UserService;
 import lombok.AllArgsConstructor;
 
 /**
- * Implementation for {@link UserService}
+ * Implementation of {@link UserService}
  * @author gorbachevov
  */
 

@@ -18,37 +18,35 @@ import com.gts.notifier.dto.UserDTO;
 import com.gts.notifier.model.User;
 import com.gts.notifier.service.UserService;
 
+import lombok.AllArgsConstructor;
+
 /**
+ * REST API controller for {@link User} entities
  * @author gorbachevov 
  */
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
 	private UserService userService;
 	
 	private ModelMapper modelMapper;
 	
-	@Autowired
-	public UserController(UserService service, ModelMapper mapper) {
-		this.userService = service;
-		this.modelMapper = mapper;
-	}
-	
-	@PostMapping("/users")
+	@PostMapping
 	public ResponseEntity<?> create(@RequestBody UserDTO user) {
 		User request = convertFromDTO(user);
 		request = userService.create(request);
 		return ResponseEntity.ok(convertFromEntity(request));
 	}
 	
-	@GetMapping("/users")
+	@GetMapping
 	public ResponseEntity<?> getAllUsers() {
 		return ResponseEntity.ok(userService.findAll());
 	}
 	
-	@GetMapping("/users/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<?> getUserById(@PathVariable Long id) {
 		 Optional<User> user = userService.findById(id);
 		 if( user.isEmpty() ) {
@@ -57,7 +55,7 @@ public class UserController {
 		 return ResponseEntity.ok(convertFromEntity(user.get()));
 	}
 	
-	@PutMapping("/users/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<?> updateUserById(@PathVariable Long id, @RequestBody UserDTO user) {
 		Optional<User> exist = userService.findById(id);
 		if( exist.isEmpty() )
@@ -68,7 +66,7 @@ public class UserController {
 		return ResponseEntity.ok(convertFromEntity(updated));
 	}
 	
-	@DeleteMapping("/users/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
 		 Optional<User> user = userService.findById(id);
 		 if( user.isEmpty() ) {

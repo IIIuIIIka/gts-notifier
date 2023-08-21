@@ -10,15 +10,15 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.Provider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-import com.gts.notifier.model.Event;
-import com.gts.notifier.repository.EventRepository;
+/**
+ * @author gorbachevov
+ */
 
 @SpringBootApplication
 @EnableScheduling
@@ -26,13 +26,9 @@ import com.gts.notifier.repository.EventRepository;
 public class NotifierApplication {
 	
 	public static void main(String[] args) {
-		ApplicationContext ctx = SpringApplication.run(NotifierApplication.class, args);
-		EventRepository repo = ctx.getBean(EventRepository.class);
-		
-		//Event someEvent = new Event("Протечка лотка сбора конденсата");
-		//repo.save(someEvent);
+		SpringApplication.run(NotifierApplication.class, args);
 	}
-
+	
 	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper mapper = new ModelMapper();
