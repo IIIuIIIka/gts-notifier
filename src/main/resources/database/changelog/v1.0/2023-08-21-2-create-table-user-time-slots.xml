@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet logicalFilePath="2023-08-21-1-create-table-user-time-slots"
+               id="2023-08-21-1-create-table-user-time-slots" author="gorbachevov">
+        <createTable tableName="user_time_slots">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="end_time" type="time">
+                <constraints nullable="true"/>
+            </column>
+            <column name="start_time" type="time">
+                <constraints nullable="true"/>
+            </column>
+            <column name="week_day" type="tinyint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

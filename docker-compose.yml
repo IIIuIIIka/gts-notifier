@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  notifier-backend:
+    image: notifier:0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8181:8181"
+    depends_on:
+      - service-db
+    environment:
+      - SERVER_PORT= 8181
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://service-db/notifier_db
+  service-db:
+    image: postgres:15.4-alpine
+    environment:
+      POSTGRES_USER: notifier
+      POSTGRES_PASSWORD: toor
+      POSTGRES_HOST_AUTH_METHOD: md5
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./infrastructure/database/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+      - db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+volumes:
+  db-data:
