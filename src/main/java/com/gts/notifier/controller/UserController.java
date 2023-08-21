@@ -72,7 +72,7 @@ public class UserController {
 		 if( user.isEmpty() ) {
 			 return ResponseEntity.notFound().build();
 		 }
-		 userService.delete( user.get() );
+		 userService.delete( id );
 		 return ResponseEntity.ok().build();
 	}
 	

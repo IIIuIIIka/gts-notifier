@@ -72,7 +72,7 @@ public class EventController {
 		 if( exist.isEmpty() ) {
 			 return ResponseEntity.notFound().build();
 		 }
-		 eventService.delete( exist.get() );
+		 eventService.delete( id );
 		 return ResponseEntity.ok().build();
 	}
 	
