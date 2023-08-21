@@ -16,3 +16,5 @@ Project created with:
 * Spring Boot version: 3.1.2
 * Spring Data JPA
 * Spring MVC
+* Liquibase
+* Docker-compose version: 3.8
